@@ -1,30 +1,48 @@
 namespace ADVENT1;
 class Day2
 {
-    int SafeLevelsResult = 0;
+    public int SafeLevelsResult = 0;
+    public int SafeLevelsResult2 = 0;
+    public List<int[]> Faild {get; set;} = new List<int[]>();
     public void Run()
     {
         var levels = CreateSequences(numbers);
         foreach(var level in levels)
         {
             var result = IsLevelSafe(level);
-            if(!result) continue;
+            if(!result) 
+            {
+                var retry = RetryBrokenLevels(level);
+                if(retry)
+                {
+                    SafeLevelsResult2++;
+                }
+                continue;
+            }
             SafeLevelsResult++;
         }
-        Console.WriteLine("Safe leves: " + SafeLevelsResult);
+        Console.WriteLine("Safe leves part 1: " + SafeLevelsResult);
+        Console.WriteLine($"Safe levels part 2: {SafeLevelsResult2 + SafeLevelsResult}");
     }
 
-    public bool IsLevelSafe(int[] level)
+    public bool IsLevelSafe(int[] level, int? removeIndex = null)
     {
         var increase = new List<int>();
         var decrease = new List<int>();
         var levelLenght = level.Length -1;
         int index = 0;
         bool isSafe = false;
+        int i = 1;
         
         foreach(int num in level)
         {
-            int i = index + 1;
+            if(removeIndex.HasValue && index == removeIndex.Value) 
+            {
+                index++;
+                i++;
+                continue;
+            }
+
             if(index >= levelLenght) break;
             var sumOf = num - level[i];
            
@@ -38,8 +56,9 @@ class Day2
             }
             else
             {
-                return isSafe;
+                return false;
             }
+            i++;
             index++;
         }
 
@@ -50,6 +69,26 @@ class Day2
         
         return isSafe;
     }
+
+    public bool RetryBrokenLevels(int[] level) 
+    { 
+        bool result = false; 
+        List<int> tempLevel; 
+        for (int i = 0; i < level.Length; i++) 
+        { 
+            tempLevel = level.ToList(); 
+            // Create a copy of the level array 
+            tempLevel.RemoveAt(i);
+            // Remove the element at index i var 
+            var isSafe = IsLevelSafe(tempLevel.ToArray()); 
+            if (isSafe) 
+            { 
+                result = true; break; 
+            } 
+        } 
+        return result; 
+    }
+    
     public int[][] CreateSequences(string numbers)
     {
         return numbers.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries)
