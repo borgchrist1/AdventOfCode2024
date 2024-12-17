@@ -32,25 +32,24 @@ class Day3
     public void Part2() 
     { 
         var result = new List<int>(); 
-        bool enabled = true; 
+
         string pattern = @"mul\(\d+,\d+\)"; 
-        string[] segments = Regex.Split(BrokenMemoryString, @"(?<=do\(\))|(?<=don't\(\))");
-        foreach (string segment in segments) 
+        var splittedBrokenMemStr = BrokenMemoryString.Split("don't()");
+        
+        bool firstRun = true;
+        foreach (string str in splittedBrokenMemStr) 
         { 
-            if (segment.Contains("do()")) 
-            { 
-                enabled = true; 
-                continue;
-            } 
-            else if (segment.Contains("don't()")) 
-            { 
-                enabled = false; 
-                continue;
-            } 
-            if (enabled) 
-            { 
+            var splittedBrokenMemStrDo = str.Split("do()");
+            int index = 0;
+            foreach(var strDo in splittedBrokenMemStrDo)
+            {
+                if(!firstRun && index == 0) {
+                    index++;
+                    continue;
+                }
+    
                 Regex regex = new Regex(pattern); 
-                MatchCollection matches = regex.Matches(segment); 
+                MatchCollection matches = regex.Matches(strDo); 
                 var numberPattern = @"\d+,\d+"; 
                 foreach (Match match in matches) 
                 { 
@@ -59,7 +58,9 @@ class Day3
                     var matchArray = singleMatch.ToString().Split(','); 
                     result.Add(mul(int.Parse(matchArray[0]), int.Parse(matchArray[1]))); 
                 } 
-            } 
+                firstRun = false;
+                index++;
+            }
         } 
         Console.WriteLine("Result part 2: " + result.Sum()); 
     }
