@@ -12,3 +12,4 @@
 /home/user/adventOfCode/Advent1/obj/Debug/net9.0/Advent1.pdb
 /home/user/adventOfCode/Advent1/obj/Debug/net9.0/Advent1.genruntimeconfig.cache
 /home/user/adventOfCode/Advent1/obj/Debug/net9.0/ref/Advent1.dll
+/home/user/adventOfCode/Advent1/obj/Debug/net9.0/Advent1.sourcelink.json
