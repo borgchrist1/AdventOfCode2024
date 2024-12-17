@@ -34,16 +34,18 @@ class Day3
         var result = new List<int>(); 
         bool enabled = true; 
         string pattern = @"mul\(\d+,\d+\)"; 
-        string[] segments = Regex.Split(BrokenMemoryString, @"\b(don't\(\)|do\(\))\b"); 
+        string[] segments = Regex.Split(BrokenMemoryString, @"(?<=do\(\))|(?<=don't\(\))");
         foreach (string segment in segments) 
         { 
             if (segment.Contains("do()")) 
             { 
                 enabled = true; 
+                continue;
             } 
             else if (segment.Contains("don't()")) 
             { 
                 enabled = false; 
+                continue;
             } 
             if (enabled) 
             { 
