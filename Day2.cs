@@ -77,13 +77,14 @@ class Day2
         for (int i = 0; i < level.Length; i++) 
         { 
             tempLevel = level.ToList(); 
-            // Create a copy of the level array 
+            
             tempLevel.RemoveAt(i);
-            // Remove the element at index i var 
+           
             var isSafe = IsLevelSafe(tempLevel.ToArray()); 
             if (isSafe) 
             { 
-                result = true; break; 
+                result = true; 
+                break; 
             } 
         } 
         return result; 
